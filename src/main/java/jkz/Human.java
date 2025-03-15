@@ -4,7 +4,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
-public class Human {
+public class Human implements Comparable<Human> {
 	private String name;
 	private char gender;
 	private int age;
@@ -13,7 +13,8 @@ public class Human {
 	/**
 	 * Create a new human with a name, gender and age
 	 * @param name   - person's name
-	 * @param gender - person's gender, valid values are 'm', 'f' or 'o', if not valid value is provided, defaults to 'o'
+	 * @param gender - person's gender, valid values are 'm', 'f' or 'o',
+	 *               if not valid value is provided, defaults to 'o'
 	 * @param age    - person's age, valid range is 0 to 200, if not valid value is provided, defaults to 0
 	 */
 	public Human(String name, char gender, int age) {
@@ -26,7 +27,8 @@ public class Human {
 	/**
 	 * Create a new human with a name, gender and age
 	 * @param name     - person's name
-	 * @param gender   - person's gender, valid values are 'm', 'f' or 'o', if not valid value is provided, defaults to 'o'
+	 * @param gender   - person's gender, valid values are 'm', 'f' or 'o',
+	 *                 if not valid value is provided, defaults to 'o'
 	 * @param age      - person's age, valid range is 0 to 200, if not valid value is provided, defaults to 0
 	 * @param children - person's children
 	 */
@@ -113,7 +115,7 @@ public class Human {
 	public boolean removeChildren(Set<Human> children) {
 		return this.children.removeAll(children);
 	}
-	
+
 	public boolean hasChildren() {
 		return !children.isEmpty();
 	}
@@ -135,5 +137,15 @@ public class Human {
 	@Override
 	public int hashCode() {
 		return Objects.hash(getName(), getAge(), children);
+	}
+
+	@Override
+	public int compareTo(Human human) {
+		return this.getName().compareTo(human.getName());
+	}
+
+	@Override
+	public String toString() {
+		return "Human {\n" + "\tname = '" + name + "'" + "\n\tgender = '" + gender + "'" + "\n\tage = " + age + "\n" + "\tchildren = " + children + "\n}";
 	}
 }
