@@ -1,4 +1,4 @@
-package ToolsQA;
+package jkz;
 
 import junit.framework.Test;
 import junit.framework.TestCase;
