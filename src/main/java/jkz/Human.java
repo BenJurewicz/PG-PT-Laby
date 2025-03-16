@@ -1,6 +1,7 @@
 package jkz;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Objects;
 import java.util.Set;
 
@@ -112,8 +113,24 @@ public class Human implements Comparable<Human> {
 		return this.children.addAll(children);
 	}
 
+	public boolean addChildren(Human... children) {
+		boolean result = false;
+		for (Human child : children) {
+			result = addChild(child) || result;
+		}
+		return result;
+	}
+
 	public boolean removeChildren(Set<Human> children) {
 		return this.children.removeAll(children);
+	}
+
+	public boolean removeChildren(Human... children) {
+		boolean result = false;
+		for (Human child : children) {
+			result = result || removeChild(child);
+		}
+		return result;
 	}
 
 	public boolean hasChildren() {
@@ -146,6 +163,17 @@ public class Human implements Comparable<Human> {
 
 	@Override
 	public String toString() {
-		return "Human {\n" + "\tname = '" + name + "'" + "\n\tgender = '" + gender + "'" + "\n\tage = " + age + "\n" + "\tchildren = " + children + "\n}";
+		StringBuilder output = new StringBuilder(name + "(" + gender + ")(" + age + ")" + "[");
+
+		Iterator<Human> iterator = children.iterator();
+		while (iterator.hasNext()) {
+			output.append(iterator.next().getName());
+			if (iterator.hasNext()) {
+				output.append(", ");
+			}
+		}
+
+		output.append("]");
+		return output.toString();
 	}
 }
