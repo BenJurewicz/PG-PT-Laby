@@ -1,11 +1,13 @@
 package jkz;
 
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
+
 
 public class Human implements Comparable<Human> {
+	public enum Sort {
+		NONE, DEFAULT, ALTERNATIVE
+	}
+
 	private String name;
 	private char gender;
 	private int age;
@@ -13,33 +15,45 @@ public class Human implements Comparable<Human> {
 
 	/**
 	 * Create a new human with a name, gender and age
-	 * 
-	 * @param name   - person's name
-	 * @param gender - person's gender, valid values are 'm', 'f' or 'o',
+	 * @param name       person's name
+	 * @param gender     person's gender, valid values are 'm', 'f' or 'o',
+	 *                   if not valid value is provided, defaults to 'o'
+	 * @param age        person's age, valid range is 0 to 200, if not valid value is provided, defaults to 0
+	 * @param sort       sort type, valid values are 'none', 'default' or 'alternative',
+	 *                   if not valid value is provided, defaults to 'none'
+	 * @param comparator comparator used for sorting children (used only when sort is 'alternative', can be null
+	 *                   otherwise)
+	 */
+	public Human(String name, char gender, int age, Sort sort, Comparator<Human> comparator) {
+		this.name = name;
+		this.gender = isValidGender(gender) ? gender : 'o';
+		this.age = isValidAge(age) ? age : 0;
+
+		switch (sort) {
+			case DEFAULT:
+				this.children = new TreeSet<>();
+				break;
+			case ALTERNATIVE:
+				this.children = new TreeSet<>(comparator);
+				break;
+			default: // NONE
+				this.children = new HashSet<>();
+				break;
+		}
+	}
+
+	/**
+	 * Create a new human with a name, gender and age
+	 * @param name   person's name
+	 * @param gender person's gender, valid values are 'm', 'f' or 'o',
 	 *               if not valid value is provided, defaults to 'o'
-	 * @param age    - person's age, valid range is 0 to 200, if not valid value is
-	 *               provided, defaults to 0
+	 * @param age    person's age, valid range is 0 to 200, if not valid value is provided, defaults to 0
 	 */
 	public Human(String name, char gender, int age) {
 		this.name = name;
 		this.gender = isValidGender(gender) ? gender : 'o';
 		this.age = isValidAge(age) ? age : 0;
 		this.children = new HashSet<>();
-	}
-
-	/**
-	 * Create a new human with a name, gender and age
-	 * 
-	 * @param name     - person's name
-	 * @param gender   - person's gender, valid values are 'm', 'f' or 'o',
-	 *                 if not valid value is provided, defaults to 'o'
-	 * @param age      - person's age, valid range is 0 to 200, if not valid value
-	 *                 is provided, defaults to 0
-	 * @param children - person's children
-	 */
-	public Human(String name, char gender, int age, Set<Human> children) {
-		this(name, gender, age);
-		addChildren(children);
 	}
 
 	private static boolean isValidGender(char gender) {
@@ -65,11 +79,10 @@ public class Human implements Comparable<Human> {
 	/**
 	 * Set gender to 'm', 'f' or 'o'
 	 * <ul>
-	 * <li>m - male</li>
-	 * <li>f - female</li>
-	 * <li>o - other</li>
+	 *     <li> m - male </li>
+	 *     <li> f - female </li>
+	 *     <li> o - other </li>
 	 * </ul>
-	 * 
 	 * @param gender 'm', 'f' or 'o'
 	 * @return true if gender is set successfully, false otherwise
 	 */
@@ -87,8 +100,7 @@ public class Human implements Comparable<Human> {
 
 	/**
 	 * Set age between 0 and 200
-	 * 
-	 * @param age - persons age, valid range is 0 to 200
+	 * @param age persons age, valid range is 0 to 200
 	 * @return true if age is set successfully, false otherwise
 	 */
 	public boolean setAge(int age) {
@@ -147,6 +159,15 @@ public class Human implements Comparable<Human> {
 		this.children.clear();
 	}
 
+	/**
+	 * Get children as list, does not allow for modification of the original list, but allows for modification of the
+	 * children themselves
+	 * @return a shallow copy of children, can be modified without affecting the original list
+	 */
+	public List<Human> getChildren() {
+		return new ArrayList<>(children);
+	}
+
 	@Override
 	public boolean equals(Object object) {
 		if (object == null || getClass() != object.getClass()) {
@@ -154,7 +175,7 @@ public class Human implements Comparable<Human> {
 		}
 		Human human = (Human) object;
 		return getAge() == human.getAge() && Objects.equals(getName(), human.getName()) && Objects.equals(children,
-				human.children);
+		                                                                                                  human.children);
 	}
 
 	@Override
