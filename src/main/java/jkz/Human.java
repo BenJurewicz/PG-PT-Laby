@@ -13,10 +13,12 @@ public class Human implements Comparable<Human> {
 
 	/**
 	 * Create a new human with a name, gender and age
+	 * 
 	 * @param name   - person's name
 	 * @param gender - person's gender, valid values are 'm', 'f' or 'o',
 	 *               if not valid value is provided, defaults to 'o'
-	 * @param age    - person's age, valid range is 0 to 200, if not valid value is provided, defaults to 0
+	 * @param age    - person's age, valid range is 0 to 200, if not valid value is
+	 *               provided, defaults to 0
 	 */
 	public Human(String name, char gender, int age) {
 		this.name = name;
@@ -27,10 +29,12 @@ public class Human implements Comparable<Human> {
 
 	/**
 	 * Create a new human with a name, gender and age
+	 * 
 	 * @param name     - person's name
 	 * @param gender   - person's gender, valid values are 'm', 'f' or 'o',
 	 *                 if not valid value is provided, defaults to 'o'
-	 * @param age      - person's age, valid range is 0 to 200, if not valid value is provided, defaults to 0
+	 * @param age      - person's age, valid range is 0 to 200, if not valid value
+	 *                 is provided, defaults to 0
 	 * @param children - person's children
 	 */
 	public Human(String name, char gender, int age, Set<Human> children) {
@@ -61,10 +65,11 @@ public class Human implements Comparable<Human> {
 	/**
 	 * Set gender to 'm', 'f' or 'o'
 	 * <ul>
-	 *     <li> m - male </li>
-	 *     <li> f - female </li>
-	 *     <li> o - other </li>
+	 * <li>m - male</li>
+	 * <li>f - female</li>
+	 * <li>o - other</li>
 	 * </ul>
+	 * 
 	 * @param gender 'm', 'f' or 'o'
 	 * @return true if gender is set successfully, false otherwise
 	 */
@@ -82,6 +87,7 @@ public class Human implements Comparable<Human> {
 
 	/**
 	 * Set age between 0 and 200
+	 * 
 	 * @param age - persons age, valid range is 0 to 200
 	 * @return true if age is set successfully, false otherwise
 	 */
@@ -148,7 +154,7 @@ public class Human implements Comparable<Human> {
 		}
 		Human human = (Human) object;
 		return getAge() == human.getAge() && Objects.equals(getName(), human.getName()) && Objects.equals(children,
-		                                                                                                  human.children);
+				human.children);
 	}
 
 	@Override
@@ -175,5 +181,26 @@ public class Human implements Comparable<Human> {
 
 		output.append("]");
 		return output.toString();
+	}
+
+	public String printHierarchy() {
+		StringBuilder output = new StringBuilder();
+		buildHierarchy(0, output); // Start with indentation level 0
+		return output.toString();
+	}
+
+	private void buildHierarchy(int indentLevel, StringBuilder output) {
+		// Add indentation based on the current level
+		for (int i = 0; i < indentLevel; i++) {
+			output.append("    "); // 4 spaces per level
+		}
+
+		// Print the current human's details
+		output.append(this.toString()).append("\n");
+
+		// Recursively build the hierarchy for each child
+		for (Human child : children) {
+			child.buildHierarchy(indentLevel + 1, output);
+		}
 	}
 }
