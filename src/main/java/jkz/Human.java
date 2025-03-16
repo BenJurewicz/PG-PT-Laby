@@ -234,4 +234,65 @@ public class Human implements Comparable<Human> {
 			child.buildHierarchy(indentLevel + 1, output);
 		}
 	}
+
+	private int countDescendants() {
+		int count = 0;
+		for (Human child : children) {
+			count += 1; // Count the child itself
+			count += child.countDescendants(); // Recursively count its descendants
+		}
+		return count;
+	}
+
+	public Map<Human, Integer> generateStatistics(Sort sort, Comparator<Human> comparator) {
+		Map<Human, Integer> statistics;
+		switch (sort) {
+			case DEFAULT:
+				statistics = new TreeMap<>(); // Natural order
+				break;
+			case ALTERNATIVE:
+				statistics = new TreeMap<>(comparator); // Custom comparator
+				break;
+			default: // NONE
+				statistics = new HashMap<>(); // No sorting
+				break;
+		}
+		buildStatistics(this, statistics);
+		return statistics;
+	}
+
+	private void buildStatistics(Human human, Map<Human, Integer> statistics) {
+		// Count descendants for the current human
+		int descendantCount = human.countDescendants();
+		statistics.put(human, descendantCount);
+
+		// Recursively process all children
+		for (Human child : human.children) {
+			buildStatistics(child, statistics);
+		}
+	}
+
+	public void printStatistics(Sort sort, Comparator<Human> comparator) {
+		Map<Human, Integer> statistics = generateStatistics(sort, comparator);
+
+		// Determine the sorting type for the output message
+		String sortingType;
+		switch (sort) {
+			case DEFAULT:
+				sortingType = "Natural Sorting (by Name)";
+				break;
+			case ALTERNATIVE:
+				sortingType = "Alternative Sorting (by Age)";
+				break;
+			default: // NONE
+				sortingType = "No Sorting";
+				break;
+		}
+
+		// Print the statistics with the sorting type
+		System.out.println("\nStatistics - " + sortingType + ":");
+		for (Map.Entry<Human, Integer> entry : statistics.entrySet()) {
+			System.out.println(entry.getKey() + " -> " + entry.getValue() + " descendants");
+		}
+	}
 }
