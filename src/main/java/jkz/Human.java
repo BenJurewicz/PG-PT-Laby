@@ -2,7 +2,6 @@ package jkz;
 
 import java.util.*;
 
-
 public class Human implements Comparable<Human> {
 	public enum Sort {
 		NONE, DEFAULT, ALTERNATIVE
@@ -18,10 +17,13 @@ public class Human implements Comparable<Human> {
 	 * @param name       person's name
 	 * @param gender     person's gender, valid values are 'm', 'f' or 'o',
 	 *                   if not valid value is provided, defaults to 'o'
-	 * @param age        person's age, valid range is 0 to 200, if not valid value is provided, defaults to 0
-	 * @param sort       sort type, valid values are 'none', 'default' or 'alternative',
+	 * @param age        person's age, valid range is 0 to 200, if not valid value
+	 *                   is provided, defaults to 0
+	 * @param sort       sort type, valid values are 'none', 'default' or
+	 *                   'alternative',
 	 *                   if not valid value is provided, defaults to 'none'
-	 * @param comparator comparator used for sorting children (used only when sort is 'alternative', can be null
+	 * @param comparator comparator used for sorting children (used only when sort
+	 *                   is 'alternative', can be null
 	 *                   otherwise)
 	 */
 	public Human(String name, char gender, int age, Sort sort, Comparator<Human> comparator) {
@@ -47,7 +49,8 @@ public class Human implements Comparable<Human> {
 	 * @param name   person's name
 	 * @param gender person's gender, valid values are 'm', 'f' or 'o',
 	 *               if not valid value is provided, defaults to 'o'
-	 * @param age    person's age, valid range is 0 to 200, if not valid value is provided, defaults to 0
+	 * @param age    person's age, valid range is 0 to 200, if not valid value is
+	 *               provided, defaults to 0
 	 */
 	public Human(String name, char gender, int age) {
 		this.name = name;
@@ -79,9 +82,9 @@ public class Human implements Comparable<Human> {
 	/**
 	 * Set gender to 'm', 'f' or 'o'
 	 * <ul>
-	 *     <li> m - male </li>
-	 *     <li> f - female </li>
-	 *     <li> o - other </li>
+	 * <li>m - male</li>
+	 * <li>f - female</li>
+	 * <li>o - other</li>
 	 * </ul>
 	 * @param gender 'm', 'f' or 'o'
 	 * @return true if gender is set successfully, false otherwise
@@ -160,9 +163,11 @@ public class Human implements Comparable<Human> {
 	}
 
 	/**
-	 * Get children as list, does not allow for modification of the original list, but allows for modification of the
+	 * Get children as list, does not allow for modification of the original list,
+	 * but allows for modification of the
 	 * children themselves
-	 * @return a shallow copy of children, can be modified without affecting the original list
+	 * @return a shallow copy of children, can be modified without affecting the
+	 * original list
 	 */
 	public List<Human> getChildren() {
 		return new ArrayList<>(children);
@@ -190,7 +195,18 @@ public class Human implements Comparable<Human> {
 
 	@Override
 	public String toString() {
-		StringBuilder output = new StringBuilder(name + "(" + gender + ")(" + age + ")" + "[");
+		String genderStr;
+		switch (gender) {
+			case 'm':
+				genderStr = "male";
+				break;
+			case 'f':
+				genderStr = "female";
+				break;
+			default:
+				genderStr = "other";
+		}
+		StringBuilder output = new StringBuilder(name + "(gender: " + genderStr + ")(age: " + age + ")" + "[");
 
 		Iterator<Human> iterator = children.iterator();
 		while (iterator.hasNext()) {
@@ -202,5 +218,87 @@ public class Human implements Comparable<Human> {
 
 		output.append("]");
 		return output.toString();
+	}
+
+	public String getHierarchyAsString() {
+		StringBuilder output = new StringBuilder();
+		buildHierarchy(0, output); // Start with indentation level 0
+		return output.toString();
+	}
+
+	private void buildHierarchy(int indentLevel, StringBuilder output) {
+		// Add indentation based on the current level
+		for (int i = 0; i < indentLevel; i++) {
+			output.append("    "); // 4 spaces per level
+		}
+
+		// Print the current human's details
+		output.append(this.toString()).append("\n");
+
+		// Recursively build the hierarchy for each child
+		for (Human child : children) {
+			child.buildHierarchy(indentLevel + 1, output);
+		}
+	}
+
+	private int countDescendants() {
+		int count = 0;
+		for (Human child : children) {
+			count += 1; // Count the child itself
+			count += child.countDescendants(); // Recursively count its descendants
+		}
+		return count;
+	}
+
+	public Map<Human, Integer> generateStatistics(Sort sort, Comparator<Human> comparator) {
+		Map<Human, Integer> statistics;
+		switch (sort) {
+			case DEFAULT:
+				statistics = new TreeMap<>(); // Natural order
+				break;
+			case ALTERNATIVE:
+				statistics = new TreeMap<>(comparator); // Custom comparator
+				break;
+			default: // NONE
+				statistics = new HashMap<>(); // No sorting
+				break;
+		}
+		buildStatistics(this, statistics);
+		return statistics;
+	}
+
+	private void buildStatistics(Human human, Map<Human, Integer> statistics) {
+		// Count descendants for the current human
+		int descendantCount = human.countDescendants();
+		statistics.put(human, descendantCount);
+
+		// Recursively process all children
+		for (Human child : human.children) {
+			buildStatistics(child, statistics);
+		}
+	}
+
+	public void printStatistics(Sort sort, Comparator<Human> comparator) {
+		Map<Human, Integer> statistics = generateStatistics(sort, comparator);
+
+		// Determine the sorting type for the output message
+		String sortingType;
+		switch (sort) {
+			case DEFAULT:
+				sortingType = "Natural Sorting (by Name)";
+				break;
+			case ALTERNATIVE:
+				sortingType = "Alternative Sorting (by Age)";
+				break;
+			default: // NONE
+				sortingType = "No Sorting";
+				break;
+		}
+
+		// Print the statistics with the sorting type
+		System.out.println("\nStatistics - " + sortingType + ":");
+		for (Map.Entry<Human, Integer> entry : statistics.entrySet()) {
+			System.out.println(entry.getKey() + " -> " + entry.getValue() + " descendants");
+		}
 	}
 }
