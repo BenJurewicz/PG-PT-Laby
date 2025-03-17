@@ -20,7 +20,10 @@ public class App {
 			System.out.println("Invalid argument");
 			return;
 		}
-		fillSet(humans, 6);
+
+		int numberOfHumans = 6;
+		fillSet(humans, numberOfHumans);
+		printSet(humans);
 	}
 
 	private static void fillSet(Set<Human> set, int numberOfHumans) {
@@ -92,6 +95,12 @@ public class App {
 			// Add to a random parent from the second generation
 			Human parent = secondGeneration.get((int) (Math.random() * secondGeneration.size()));
 			parent.addChild(human);
+		}
+	}
+
+	private static void printSet(Set<Human> set) {
+		for (Human human : set) {
+			System.out.println(human);
 		}
 	}
 }
