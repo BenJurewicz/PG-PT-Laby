@@ -42,7 +42,15 @@ public class App {
 		// Create first generation
 		for (int i = 0; i < numberOfHumans / 3; i++) {
 			int age = 60 + (int) (Math.random() * 21); // Age between 60-80
-			Human human = new Human("FirstGen" + i, (i % 2 == 0) ? 'M' : 'F', age);
+			char gender;
+			if(i%3==0){
+				gender = 'm';
+			} else if (i%3==1) {
+				gender = 'f';
+			} else {
+				gender = 'o';
+			}
+			Human human = new Human("FirstGen" + i, gender, age);
 			firstGeneration.add(human);
 			set.add(human);
 		}
@@ -50,7 +58,15 @@ public class App {
 		// Create second generation
 		for (int i = 0; i < numberOfHumans / 3; i++) {
 			int age = 30 + (int) (Math.random() * 21); // Age between 30-50
-			Human human = new Human("SecondGen" + i, (i % 2 == 0) ? 'M' : 'F', age);
+			char gender;
+			if(i%3==0){
+				gender = 'm';
+			} else if (i%3==1) {
+				gender = 'f';
+			} else {
+				gender = 'o';
+			}
+			Human human = new Human("SecondGen" + i, gender, age);
 			secondGeneration.add(human);
 			set.add(human);
 
@@ -62,7 +78,15 @@ public class App {
 		// Create third generation
 		for (int i = 0; i < numberOfHumans / 3; i++) {
 			int age = (int) (Math.random() * 21); // Age between 0-20
-			Human human = new Human("ThirdGen" + i, (i % 2 == 0) ? 'M' : 'F', age);
+			char gender;
+			if(i%3==0){
+				gender = 'm';
+			} else if (i%3==1) {
+				gender = 'f';
+			} else {
+				gender = 'o';
+			}
+			Human human = new Human("ThirdGen" + i, gender, age);
 			set.add(human);
 
 			// Add to a random parent from the second generation
