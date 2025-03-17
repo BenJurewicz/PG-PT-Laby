@@ -301,4 +301,10 @@ public class Human implements Comparable<Human> {
 			System.out.println(entry.getKey() + " -> " + entry.getValue() + " descendants");
 		}
 	}
+
+	public static void printStatistic(Collection<Human> humans, Sort sort, Comparator<Human> comparator) {
+		for (Human human : humans) {
+			human.printStatistics(sort, comparator);
+		}
+	}
 }
