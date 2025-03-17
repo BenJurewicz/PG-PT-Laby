@@ -14,7 +14,6 @@ public class Human implements Comparable<Human> {
 
 	/**
 	 * Create a new human with a name, gender and age
-	 * 
 	 * @param name       person's name
 	 * @param gender     person's gender, valid values are 'm', 'f' or 'o',
 	 *                   if not valid value is provided, defaults to 'o'
@@ -47,7 +46,6 @@ public class Human implements Comparable<Human> {
 
 	/**
 	 * Create a new human with a name, gender and age
-	 * 
 	 * @param name   person's name
 	 * @param gender person's gender, valid values are 'm', 'f' or 'o',
 	 *               if not valid value is provided, defaults to 'o'
@@ -88,7 +86,6 @@ public class Human implements Comparable<Human> {
 	 * <li>f - female</li>
 	 * <li>o - other</li>
 	 * </ul>
-	 * 
 	 * @param gender 'm', 'f' or 'o'
 	 * @return true if gender is set successfully, false otherwise
 	 */
@@ -106,7 +103,6 @@ public class Human implements Comparable<Human> {
 
 	/**
 	 * Set age between 0 and 200
-	 * 
 	 * @param age persons age, valid range is 0 to 200
 	 * @return true if age is set successfully, false otherwise
 	 */
@@ -170,9 +166,8 @@ public class Human implements Comparable<Human> {
 	 * Get children as list, does not allow for modification of the original list,
 	 * but allows for modification of the
 	 * children themselves
-	 * 
 	 * @return a shallow copy of children, can be modified without affecting the
-	 *         original list
+	 * original list
 	 */
 	public List<Human> getChildren() {
 		return new ArrayList<>(children);
@@ -185,7 +180,7 @@ public class Human implements Comparable<Human> {
 		}
 		Human human = (Human) object;
 		return getAge() == human.getAge() && Objects.equals(getName(), human.getName()) && Objects.equals(children,
-				human.children);
+		                                                                                                  human.children);
 	}
 
 	@Override
@@ -200,7 +195,18 @@ public class Human implements Comparable<Human> {
 
 	@Override
 	public String toString() {
-		StringBuilder output = new StringBuilder(name + "(" + gender + ")(" + age + ")" + "[");
+		String genderStr;
+		switch (gender) {
+			case 'm':
+				genderStr = "male";
+				break;
+			case 'f':
+				genderStr = "female";
+				break;
+			default:
+				genderStr = "other";
+		}
+		StringBuilder output = new StringBuilder(name + "(gender: " + genderStr + ")(age: " + age + ")" + "[");
 
 		Iterator<Human> iterator = children.iterator();
 		while (iterator.hasNext()) {
