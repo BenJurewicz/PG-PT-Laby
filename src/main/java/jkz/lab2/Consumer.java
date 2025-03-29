@@ -1,6 +1,9 @@
 package jkz.lab2;
 
+import org.jetbrains.annotations.Nullable;
+
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Consumer implements Runnable {
@@ -12,9 +15,10 @@ public class Consumer implements Runnable {
 		this.stopSignal = stopSignal;
 	}
 
+	@Nullable
 	public Answer tryTake() {
 		try {
-			return answers.take();
+			return answers.poll(500, TimeUnit.MILLISECONDS);
 		} catch (InterruptedException e) {
 			throw new RuntimeException(e);
 		}
@@ -26,9 +30,11 @@ public class Consumer implements Runnable {
 
 	@Override
 	public void run() {
-		while (!stopSignal.get()) {
+		while (!stopSignal.get() || !answers.isEmpty()) {
 			Answer answer = tryTake();
-			handleAnswer(answer);
+			if (answer != null) {
+				handleAnswer(answer);
+			}
 		}
 	}
 }
