@@ -22,14 +22,16 @@ public class Producer implements Runnable {
 		List<Long> divisors = new ArrayList<>();
 
 		// 0 has infinite divisors
-		if (number == 0L)
+		if (number == 0L) {
 			return divisors;
+		}
 
 		for (long i = 1; i <= Math.floor(Math.sqrt(number)); i++) {
 			if (number % i == 0) {
 				divisors.add(i);
-				if (i != number / i)
+				if (i != number / i) {
 					divisors.add(number / i); // add the complementary divisor
+				}
 			}
 		}
 

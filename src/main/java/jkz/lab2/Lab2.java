@@ -13,42 +13,57 @@ public class Lab2 {
 
 	private static BlockingQueue<Answer> answers;
 	private static AtomicBoolean stopSignal;
-	private static List<Thread> threads;
+
+	private static List<Thread> producers;
+	private static List<Thread> consumers;
 
 	private static void init() {
 		answers = new ArrayBlockingQueue<Answer>(100);
 		stopSignal = new AtomicBoolean(false);
-		threads = new ArrayList<>(10);
+		producers = new ArrayList<>(producerCount);
+		consumers = new ArrayList<>(consumerCount);
 	}
 
-	private static void createTasks(Class<? extends Runnable> type, int count) {
+	private static void createTasks(Class<? extends Runnable> type, List<Thread> threadList, int count) {
 		for (int i = 0; i < count; i++) {
 			Runnable task = null;
-
 			try {
 				task = type.getConstructor(BlockingQueue.class, AtomicBoolean.class).newInstance(answers, stopSignal);
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
-
-			Thread thread = new Thread(task);
-			threads.add(thread);
+			Thread thread = new Thread(task, type.getSimpleName() + " #" + i);
+			threadList.add(thread);
 		}
 	}
 
 	private static void createThreads() {
-		createTasks(Producer.class, producerCount);
-		createTasks(Consumer.class, consumerCount);
+		createTasks(Producer.class, producers, producerCount);
+		createTasks(Consumer.class, consumers, consumerCount);
 	}
 
 	private static void startThreads() {
-		for (Thread thread : threads) {
+		for (Thread thread : producers) {
+			thread.start();
+		}
+		for (Thread thread : consumers) {
 			thread.start();
 		}
 	}
 
 	private static void joinThreads() {
-		for (Thread thread : threads) {
+		for (Thread thread : producers) {
+			try {
+				thread.join();
+			} catch (InterruptedException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		// We have to stop consumers after producers
+		// to make sure all the answers have benn consumed.
+		// Otherwise, a producer might get stuck while waiting
+		// to put an answer in a full queue.
+		for (Thread thread : consumers) {
 			try {
 				thread.join();
 			} catch (InterruptedException e) {
@@ -74,6 +89,7 @@ public class Lab2 {
 
 		createThreads();
 		startThreads();
+
 		waitForQuitSignal();
 
 		stopThreads();
