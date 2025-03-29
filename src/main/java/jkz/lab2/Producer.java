@@ -27,7 +27,7 @@ public class Producer implements Runnable {
 		if (number == 0L)
 			return divisors;
 
-		for (long i = 1; i <= Math.sqrt(number); i++) {
+		for (long i = 1; i <= Math.floor(Math.sqrt(number)); i++) {
 			if (number % i == 0) {
 				divisors.add(i);
 				if (i != number / i)
