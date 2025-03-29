@@ -16,18 +16,18 @@ public class Producer implements Runnable {
 		this.stopSignal = stopSignal;
 	}
 
-	private int getNumber() {
+	private long getNumber() {
 		return NumberGenerator.generateNumber();
 	}
 
-	private List<Integer> getDivisors(int number) {
-		List<Integer> divisors = new ArrayList<>();
+	private List<Long> getDivisors(long number) {
+		List<Long> divisors = new ArrayList<>();
 
 		// 0 has infinite divisors
-		if (number == 0)
+		if (number == 0L)
 			return divisors;
 
-		for (int i = 1; i <= Math.sqrt(number); i++) {
+		for (long i = 1; i <= Math.sqrt(number); i++) {
 			if (number % i == 0) {
 				divisors.add(i);
 				if (i != number / i)
@@ -51,10 +51,9 @@ public class Producer implements Runnable {
 	@Override
 	public void run() {
 		while (!stopSignal.get()) {
-			int generatedNumber = getNumber();
-			List<Integer> mockDivisors = getDivisors(generatedNumber);
-			Answer answer = new Answer(generatedNumber, mockDivisors);
-
+			long generatedNumber = getNumber();
+			List<Long> divisors = getDivisors(generatedNumber);
+			Answer answer = new Answer(generatedNumber, divisors);
 			tryPut(answer);
 		}
 	}
