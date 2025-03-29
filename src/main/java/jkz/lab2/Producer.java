@@ -5,8 +5,6 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-// TODO: Change the types to Long?
-
 public class Producer implements Runnable {
 	private final BlockingQueue<Answer> answers;
 	private final AtomicBoolean stopSignal;
