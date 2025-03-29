@@ -85,6 +85,7 @@ public class Lab2 {
 	}
 
 	public static void main(String[] args) {
+		NumberGenerator.setMinMax(Long.MAX_VALUE - 100_000_000, Long.MAX_VALUE);
 		init();
 
 		createThreads();
