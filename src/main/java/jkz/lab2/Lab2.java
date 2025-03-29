@@ -8,6 +8,9 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Lab2 {
+	private static int producerCount = 5;
+	private static int consumerCount = 1;
+
 	private static BlockingQueue<Answer> answers;
 	private static AtomicBoolean stopSignal;
 	private static List<Thread> threads;
@@ -33,7 +36,7 @@ public class Lab2 {
 		}
 	}
 
-	private static void createThreads(int producerCount, int consumerCount) {
+	private static void createThreads() {
 		createTasks(Producer.class, producerCount);
 		createTasks(Consumer.class, consumerCount);
 	}
@@ -69,11 +72,27 @@ public class Lab2 {
 	public static void main(String[] args) {
 		init();
 
-		createThreads(5, 1);
+		createThreads();
 		startThreads();
 		waitForQuitSignal();
 
 		stopThreads();
 		joinThreads();
+	}
+
+	public static int getProducerCount() {
+		return producerCount;
+	}
+
+	public static void setProducerCount(int producerCount) {
+		Lab2.producerCount = producerCount;
+	}
+
+	public static int getConsumerCount() {
+		return consumerCount;
+	}
+
+	public static void setConsumerCount(int consumerCount) {
+		Lab2.consumerCount = consumerCount;
 	}
 }
