@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
+// TODO: Change the types to Long?
+
 public class Producer implements Runnable {
 	private final BlockingQueue<Answer> answers;
 	private final AtomicBoolean stopSignal;
@@ -18,11 +20,23 @@ public class Producer implements Runnable {
 		return NumberGenerator.generateNumber();
 	}
 
-	private List<Integer> getDivisors() {
+	private List<Integer> getDivisors(int number) {
 		List<Integer> divisors = new ArrayList<>();
-		for (int i = 1; i <= 10; i++) {
-			divisors.add(NumberGenerator.generateNumber());
+
+		// 0 has infinite divisors
+		if (number == 0)
+			return divisors;
+
+		for (int i = 1; i <= Math.sqrt(number); i++) {
+			if (number % i == 0) {
+				divisors.add(i);
+				if (i != number / i)
+					divisors.add(number / i); // add the complementary divisor
+			}
 		}
+
+		divisors.sort(null);
+
 		return divisors;
 	}
 
@@ -37,16 +51,9 @@ public class Producer implements Runnable {
 	@Override
 	public void run() {
 		while (!stopSignal.get()) {
-			int mockNumber = getNumber();
-			List<Integer> mockDivisors = getDivisors();
-			Answer answer = new Answer(mockNumber, mockDivisors);
-
-			// TODO: Remove this
-			try {
-				Thread.sleep(1000);
-			} catch (InterruptedException e) {
-				throw new RuntimeException(e);
-			}
+			int generatedNumber = getNumber();
+			List<Integer> mockDivisors = getDivisors(generatedNumber);
+			Answer answer = new Answer(generatedNumber, mockDivisors);
 
 			tryPut(answer);
 		}
