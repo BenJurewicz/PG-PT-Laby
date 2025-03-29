@@ -1,4 +1,4 @@
-package jkz;
+package jkz.lab1;
 
 import java.util.*;
 
