@@ -2,6 +2,7 @@ package jkz.lab2;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -14,7 +15,7 @@ public class Producer implements Runnable {
 		this.stopSignal = stopSignal;
 	}
 
-	private long getNumber() {
+	private Optional<Long> getNumber() {
 		return NumberGenerator.generateNumber();
 	}
 
@@ -50,10 +51,14 @@ public class Producer implements Runnable {
 
 	@Override
 	public void run() {
-		while (!stopSignal.get()) {
-			long generatedNumber = getNumber();
-			List<Long> divisors = getDivisors(generatedNumber);
-			Answer answer = new Answer(generatedNumber, divisors);
+		while (!stopSignal.get() || !answers.isEmpty()) {
+			Optional<Long> generatedNumber = getNumber();
+			if (!generatedNumber.isPresent()) {
+				break;
+			}
+			long generatedNumberValue = generatedNumber.get();
+			List<Long> divisors = getDivisors(generatedNumberValue);
+			Answer answer = new Answer(generatedNumberValue, divisors);
 			tryPut(answer);
 		}
 	}
