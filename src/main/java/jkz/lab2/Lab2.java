@@ -13,6 +13,7 @@ public class Lab2 {
 
 	private static BlockingQueue<Answer> answers;
 	private static AtomicBoolean stopSignal;
+	public static AtomicBoolean forceStopSignal;
 
 	private static List<Thread> producers;
 	private static List<Thread> consumers;
@@ -29,6 +30,7 @@ public class Lab2 {
 	private static void init(String[] args) {
 		answers = new ArrayBlockingQueue<Answer>(100);
 		stopSignal = new AtomicBoolean(false);
+		forceStopSignal = new AtomicBoolean(false);
 		producers = new ArrayList<>(producerCount);
 		consumers = new ArrayList<>(consumerCount);
 
@@ -55,7 +57,8 @@ public class Lab2 {
 		for (int i = 0; i < count; i++) {
 			Runnable task = null;
 			try {
-				task = type.getConstructor(BlockingQueue.class, AtomicBoolean.class).newInstance(answers, stopSignal);
+				task = type.getConstructor(BlockingQueue.class, AtomicBoolean.class, AtomicBoolean.class).newInstance(
+						answers, stopSignal, forceStopSignal);
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
@@ -105,18 +108,20 @@ public class Lab2 {
 
 	private static void waitForQuitSignal() {
 		try {
-			System.in.read();
+			while (System.in.available() == 0 && !stopSignal.get()) {
+			}
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+		forceStopSignal.set(true);
 	}
 
 	public static void main(String[] args) {
 		init(args);
 		createThreads();
 		startThreads();
-		//		waitForQuitSignal();
-		//		stopThreads(); // NumberGenerator stops threads currently
+		waitForQuitSignal();
+		stopThreads(); // NumberGenerator stops threads currently
 		joinThreads();
 	}
 }
