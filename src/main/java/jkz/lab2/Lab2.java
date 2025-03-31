@@ -85,7 +85,7 @@ public class Lab2 {
 	}
 
 	public static void main(String[] args) {
-		NumberGenerator.setMinMax(Long.MAX_VALUE - 100_000_000, Long.MAX_VALUE);
+		NumberGenerator.init(Long.MAX_VALUE - 100, Long.MAX_VALUE - 1);
 		init();
 
 		createThreads();
@@ -95,21 +95,5 @@ public class Lab2 {
 
 		stopThreads();
 		joinThreads();
-	}
-
-	public static int getProducerCount() {
-		return producerCount;
-	}
-
-	public static void setProducerCount(int producerCount) {
-		Lab2.producerCount = producerCount;
-	}
-
-	public static int getConsumerCount() {
-		return consumerCount;
-	}
-
-	public static void setConsumerCount(int consumerCount) {
-		Lab2.consumerCount = consumerCount;
 	}
 }
