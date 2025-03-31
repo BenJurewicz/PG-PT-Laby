@@ -8,11 +8,12 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Lab2 {
-	private static final int producerCount = 5;
+	private static int producerCount = 5;
 	private static final int consumerCount = 1;
 
 	private static BlockingQueue<Answer> answers;
 	private static AtomicBoolean stopSignal;
+	public static AtomicBoolean forceStopSignal;
 
 	private static List<Thread> producers;
 	private static List<Thread> consumers;
@@ -26,20 +27,38 @@ public class Lab2 {
 		return false;
 	}
 
-	private static void init() {
+	private static void init(String[] args) {
 		answers = new ArrayBlockingQueue<Answer>(100);
 		stopSignal = new AtomicBoolean(false);
+		forceStopSignal = new AtomicBoolean(false);
 		producers = new ArrayList<>(producerCount);
 		consumers = new ArrayList<>(consumerCount);
 
 		NumberGenerator.init((Long.MAX_VALUE / 10) - 20, (Long.MAX_VALUE / 10) - 1, stopSignal);
+
+		if (args.length == 0) {
+			System.out.println("No arguments provided");
+			return;
+		}
+		int pCount;
+		try {
+			pCount = Integer.parseInt(args[0]);
+		} catch (NumberFormatException e) {
+			pCount = producerCount;
+		}
+		if (pCount < 2) {
+			System.out.println("Minimum number of producers is 2, defaulting to 2");
+			pCount = 2;
+		}
+		producerCount = pCount - 1;
 	}
 
 	private static void createTasks(Class<? extends Runnable> type, List<Thread> threadList, int count) {
 		for (int i = 0; i < count; i++) {
 			Runnable task = null;
 			try {
-				task = type.getConstructor(BlockingQueue.class, AtomicBoolean.class).newInstance(answers, stopSignal);
+				task = type.getConstructor(BlockingQueue.class, AtomicBoolean.class, AtomicBoolean.class).newInstance(
+						answers, stopSignal, forceStopSignal);
 			} catch (Exception e) {
 				throw new RuntimeException(e);
 			}
@@ -89,18 +108,20 @@ public class Lab2 {
 
 	private static void waitForQuitSignal() {
 		try {
-			System.in.read();
+			while (System.in.available() == 0 && !stopSignal.get()) {
+			}
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
+		forceStopSignal.set(true);
 	}
 
 	public static void main(String[] args) {
-		init();
+		init(args);
 		createThreads();
 		startThreads();
-		//		waitForQuitSignal();
-		//		stopThreads(); // NumberGenerator stops threads currently
+		waitForQuitSignal();
+		stopThreads(); // NumberGenerator stops threads currently
 		joinThreads();
 	}
 }

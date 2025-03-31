@@ -9,10 +9,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 public class Producer implements Runnable {
 	private final BlockingQueue<Answer> answers;
 	private final AtomicBoolean stopSignal;
+	private final AtomicBoolean forceStopSignal;
 
-	public Producer(BlockingQueue<Answer> answers, AtomicBoolean stopSignal) {
+	public Producer(BlockingQueue<Answer> answers, AtomicBoolean stopSignal, AtomicBoolean forceStopSignal) {
 		this.answers = answers;
 		this.stopSignal = stopSignal;
+		this.forceStopSignal = forceStopSignal;
 	}
 
 	private Optional<Long> getNumber() {
@@ -51,7 +53,7 @@ public class Producer implements Runnable {
 
 	@Override
 	public void run() {
-		while (!stopSignal.get() || !answers.isEmpty()) {
+		while (!forceStopSignal.get() && (!stopSignal.get() || !answers.isEmpty())) {
 			Optional<Long> generatedNumber = getNumber();
 			if (!generatedNumber.isPresent()) {
 				break;

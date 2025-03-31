@@ -9,10 +9,12 @@ public class Consumer implements Runnable {
 	static AtomicLong COUNT = new AtomicLong(0);
 	private final BlockingQueue<Answer> answers;
 	private final AtomicBoolean stopSignal;
+	private final AtomicBoolean forceStopSignal;
 
-	public Consumer(BlockingQueue<Answer> answers, AtomicBoolean stopSignal) {
+	public Consumer(BlockingQueue<Answer> answers, AtomicBoolean stopSignal, AtomicBoolean forceStopSignal) {
 		this.answers = answers;
 		this.stopSignal = stopSignal;
+		this.forceStopSignal = forceStopSignal;
 	}
 
 	public Answer tryTake() {
@@ -30,7 +32,7 @@ public class Consumer implements Runnable {
 
 	@Override
 	public void run() {
-		while (!stopSignal.get() || !answers.isEmpty() || Lab2.areProducersRunning()) {
+		while (!forceStopSignal.get() && (!stopSignal.get() || !answers.isEmpty() || Lab2.areProducersRunning())) {
 			Answer answer = tryTake();
 			if (answer != null) {
 				handleAnswer(answer);
