@@ -8,8 +8,8 @@ import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 public class Lab2 {
-	private static int producerCount = 5;
-	private static int consumerCount = 1;
+	private static final int producerCount = 5;
+	private static final int consumerCount = 1;
 
 	private static BlockingQueue<Answer> answers;
 	private static AtomicBoolean stopSignal;
@@ -17,11 +17,22 @@ public class Lab2 {
 	private static List<Thread> producers;
 	private static List<Thread> consumers;
 
+	public static boolean areProducersRunning() {
+		for (Thread p : producers) {
+			if (p.isAlive()) {
+				return true;
+			}
+		}
+		return false;
+	}
+
 	private static void init() {
 		answers = new ArrayBlockingQueue<Answer>(100);
 		stopSignal = new AtomicBoolean(false);
 		producers = new ArrayList<>(producerCount);
 		consumers = new ArrayList<>(consumerCount);
+
+		NumberGenerator.init((Long.MAX_VALUE / 10) - 20, (Long.MAX_VALUE / 10) - 1, stopSignal);
 	}
 
 	private static void createTasks(Class<? extends Runnable> type, List<Thread> threadList, int count) {
@@ -85,15 +96,11 @@ public class Lab2 {
 	}
 
 	public static void main(String[] args) {
-		NumberGenerator.init(Long.MAX_VALUE - 100, Long.MAX_VALUE - 1);
 		init();
-
 		createThreads();
 		startThreads();
-
-		waitForQuitSignal();
-
-		stopThreads();
+		//		waitForQuitSignal();
+		//		stopThreads(); // NumberGenerator stops threads currently
 		joinThreads();
 	}
 }

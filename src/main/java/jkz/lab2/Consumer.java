@@ -30,7 +30,7 @@ public class Consumer implements Runnable {
 
 	@Override
 	public void run() {
-		while (!stopSignal.get() || !answers.isEmpty()) {
+		while (!stopSignal.get() || !answers.isEmpty() || Lab2.areProducersRunning()) {
 			Answer answer = tryTake();
 			if (answer != null) {
 				handleAnswer(answer);
