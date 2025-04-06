@@ -3,7 +3,7 @@ package jkz.lab4.Helpers;
 import java.io.IOException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-// TODO: Remvoe if found usless
+// TODO: Remove if found useless
 public class TerminateOnUserInput implements Runnable {
 	private static AtomicBoolean stopSignal;
 	private static AtomicBoolean forceStopSignal;
