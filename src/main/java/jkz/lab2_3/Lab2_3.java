@@ -113,7 +113,9 @@ public class Lab2_3 {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		forceStopSignal.set(true);
+		if (!stopSignal.get()) {
+			forceStopSignal.set(true);
+		}
 	}
 
 	public static void main(String[] args) {
