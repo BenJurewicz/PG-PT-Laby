@@ -1,4 +1,4 @@
-package jkz.lab2;
+package jkz.lab2_3;
 
 import java.util.List;
 
