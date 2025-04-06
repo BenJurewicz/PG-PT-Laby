@@ -1,4 +1,4 @@
-package jkz.lab2;
+package jkz.lab2_3;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.TimeUnit;
@@ -32,7 +32,7 @@ public class Consumer implements Runnable {
 
 	@Override
 	public void run() {
-		while (!forceStopSignal.get() && (!stopSignal.get() || !answers.isEmpty() || Lab2.areProducersRunning())) {
+		while (!forceStopSignal.get() && (!stopSignal.get() || !answers.isEmpty() || Lab2_3.areProducersRunning())) {
 			Answer answer = tryTake();
 			if (answer != null) {
 				handleAnswer(answer);

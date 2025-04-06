@@ -1,4 +1,4 @@
-package jkz.lab2;
+package jkz.lab2_3;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -7,7 +7,7 @@ import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-public class Lab2 {
+public class Lab2_3 {
 	private static int producerCount = 5;
 	private static final int consumerCount = 1;
 
