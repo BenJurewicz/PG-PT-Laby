@@ -58,8 +58,7 @@ public class Client implements Runnable {
 		if (number.isEmpty()) {
 			return Optional.empty();
 		}
-		long num = number.get();
-		List<Long> divisors = getDivisors(num);
+		List<Long> divisors = getDivisors(number.get());
 		return Optional.of(new Answer(clientId, number.get(), divisors));
 	}
 
