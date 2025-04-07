@@ -1,5 +1,6 @@
 package jkz.lab4.Services.Client;
 
+import jkz.lab4.Helpers.Colors;
 import jkz.lab4.Helpers.Debug;
 import jkz.lab4.Helpers.NumberGenerator;
 import jkz.lab4.Packets.Answer;
@@ -15,6 +16,7 @@ import java.util.Optional;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Client implements Runnable {
+	public static final String prefix = Colors.YELLOW + "Client: " + Colors.RESET;
 	static AtomicInteger clientIdCounter = new AtomicInteger(0);
 
 	private final NumberGenerator numberGenerator;
@@ -69,7 +71,7 @@ public class Client implements Runnable {
 			}
 			out.writeObject(answer.get());
 			out.flush();
-			Debug.print("Client: Client " + clientId + " sent: " + answer.get());
+			Debug.print(prefix + "Client " + clientId + " sent: " + answer.get());
 		}
 	}
 
@@ -88,16 +90,16 @@ public class Client implements Runnable {
 	@Override
 	public void run() {
 		try (Socket socket = new Socket(serverAddress, port);
-				ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream())) {
+		     ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream())) {
 
-			Debug.print("Client: Client " + clientId + " connected to server at " + serverAddress + ":" + port);
+			Debug.debug(prefix + "Client " + clientId + " connected to server at " + serverAddress + ":" + port);
 			register(objectOutputStream);
 			mainLoop(objectOutputStream);
 			unregister(objectOutputStream);
-			Debug.print("Client: Client " + clientId + " finished sending data.");
+			Debug.debug(prefix + "Client " + clientId + " finished sending data.");
 
 		} catch (Exception e) {
-			Debug.print("Client: Client " + clientId + " error: " + e.getMessage());
+			Debug.debug(prefix + "Client " + clientId + " error: " + e.getMessage());
 			e.printStackTrace();
 		}
 	}

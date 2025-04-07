@@ -1,5 +1,6 @@
 package jkz.lab4.Services.Server;
 
+import jkz.lab4.Helpers.Colors;
 import jkz.lab4.Helpers.Debug;
 
 import java.io.IOException;
@@ -10,6 +11,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
 public class Server implements Runnable {
+	public static final String prefix = Colors.CYAN + "Server: " + Colors.RESET;
+
 	private final int timeout;
 	private final int port;
 	private final ExecutorService clientProcessingPool;
@@ -31,10 +34,10 @@ public class Server implements Runnable {
 	public void run() {
 		try (ServerSocket serverSocket = new ServerSocket(port)) {
 			serverSocket.setSoTimeout(timeout);
-			Debug.print("Server: Server started on port " + port);
+			Debug.debug(prefix, "Server started on port " + port);
 			mainLoop(serverSocket);
 		} catch (SocketTimeoutException e) {
-			Debug.print("Server: ServerSocket timed out.");
+			Debug.debug(prefix, "ServerSocket timed out.");
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
