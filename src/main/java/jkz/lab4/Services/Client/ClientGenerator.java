@@ -40,7 +40,7 @@ public class ClientGenerator {
 
 			threads.add(clientThread);
 		}
-		Debug.print("Launched " + numberOfClients + " clients.");
+		Debug.debug(Client.prefix + "Launched " + numberOfClients + " clients.");
 
 		return threads;
 	}
