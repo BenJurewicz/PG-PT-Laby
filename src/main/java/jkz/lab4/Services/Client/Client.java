@@ -29,12 +29,35 @@ public class Client implements Runnable {
 		this.numberGenerator = new NumberGenerator(min, max);
 	}
 
+	private List<Long> getDivisors(long number) {
+		List<Long> divisors = new ArrayList<>();
+
+		// 0 has infinite divisors
+		if (number == 0L) {
+			return divisors;
+		}
+
+		for (long i = 1; i <= Math.floor(Math.sqrt(number)); i++) {
+			if (number % i == 0) {
+				divisors.add(i);
+				if (i != number / i) {
+					divisors.add(number / i); // add the complementary divisor
+				}
+			}
+		}
+
+		divisors.sort(null);
+
+		return divisors;
+	}
+
 	private Optional<Answer> generateAnswer() {
 		Optional<Long> number = numberGenerator.generateNumber();
 		if (number.isEmpty()) {
 			return Optional.empty();
 		}
-		List<Long> divisors = new ArrayList<>();
+		long num = number.get();
+		List<Long> divisors = getDivisors(num);
 		return Optional.of(new Answer(clientId, number.get(), divisors));
 	}
 
@@ -47,8 +70,6 @@ public class Client implements Runnable {
 			out.writeObject(answer.get());
 			out.flush();
 			Debug.print("Client: Client " + clientId + " sent: " + answer.get());
-
-			Thread.sleep(3000); // TODO: Remove after generating the answer correctly
 		}
 	}
 
@@ -67,7 +88,7 @@ public class Client implements Runnable {
 	@Override
 	public void run() {
 		try (Socket socket = new Socket(serverAddress, port);
-		     ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream())) {
+				ObjectOutputStream objectOutputStream = new ObjectOutputStream(socket.getOutputStream())) {
 
 			Debug.print("Client: Client " + clientId + " connected to server at " + serverAddress + ":" + port);
 			register(objectOutputStream);
