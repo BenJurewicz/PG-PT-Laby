@@ -3,21 +3,23 @@ package jkz;
 import jkz.Database.Entities.Company;
 import jkz.Database.Entities.Department;
 import jkz.Database.Entities.Employee;
-import jkz.Database.Managers.Manager;
+import jkz.Database.Managers.DepartmentManager;
+import jkz.Database.Managers.CompanyManager;
+import jkz.Database.Managers.EmployeeManager;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class DatabaseSeeder {
-    private final Manager<Company> companyManager;
-    private final Manager<Department> departmentManager;
-    private final Manager<Employee> employeeManager;
+    private final CompanyManager companyManager;
+    private final DepartmentManager departmentManager;
+    private final EmployeeManager employeeManager;
 
     public DatabaseSeeder() {
-        this.companyManager = new Manager<>(Company.class);
-        this.departmentManager = new Manager<>(Department.class);
-        this.employeeManager = new Manager<>(Employee.class);
+        this.companyManager = new CompanyManager();
+        this.departmentManager = new DepartmentManager();
+        this.employeeManager = new EmployeeManager();
     }
 
     public void seedAll() {
@@ -74,11 +76,6 @@ public class DatabaseSeeder {
 
             Employee employee = new Employee(fullName, pesel, salary, employedFrom, department);
             employeeManager.add(employee);
-
-            if (i == 1) { // Make the first employee the manager
-                department.setManager(employee);
-                departmentManager.update(department);
-            }
         }
     }
 }
