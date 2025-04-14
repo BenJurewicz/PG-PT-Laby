@@ -94,11 +94,11 @@ FROM Company c
 GROUP BY c.name;
 
 -- for every company show the average salary of employees in the company
-SELECT c.name        AS CompanyName,
-       AVG(e.salary) AS AverageSalary
+SELECT c.name AS CompanyName,
+AVG(e.salary) AS AverageSalary
 FROM Company c
-         JOIN Department d ON c.id = d.company_id
-         JOIN Employee e ON d.id = e.department_id
+JOIN Department d ON c.id = d.company_id
+JOIN Employee e ON d.id = e.department_id
 GROUP BY c.name
 ORDER BY AverageSalary DESC;
 
