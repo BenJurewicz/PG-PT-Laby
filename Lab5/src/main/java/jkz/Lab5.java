@@ -1,11 +1,5 @@
 package jkz;
 
-// import jkz.Database.Entities.Company;
-// import jkz.Database.Entities.Department;
-// import jkz.Database.Entities.Employee;
-// import jkz.Database.Managers.Manager;
-
-// import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
