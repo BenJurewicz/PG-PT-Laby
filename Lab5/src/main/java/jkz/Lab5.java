@@ -13,6 +13,7 @@ import java.util.logging.Logger;
 public class Lab5 {
 
 	public static void main(String[] args) {
+		silenceLogging();
 		new DatabaseSeeder().seedAll();
 
 		Requests.getCandidatesForRaise();
@@ -28,6 +29,8 @@ public class Lab5 {
 		RequestNRecords.getRecords("Employee",1 );
 		RequestNRecords.getRecords("Department",1 );
 		RequestNRecords.getRecords("Company",1 );
+
+
 
 	}
 
