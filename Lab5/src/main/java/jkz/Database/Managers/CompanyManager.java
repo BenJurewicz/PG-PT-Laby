@@ -14,8 +14,9 @@ public class CompanyManager extends Manager<Company> {
 		DepartmentManager departmentManager = new DepartmentManager();
 		List<Department> departments = company.getDepartments();
 		for (Department department : departments) {
-			department.setCompany(null);
-			departmentManager.update(department);
+//			department.setCompany(null);
+//			departmentManager.update(department);
+			departmentManager.remove(department.getId());
 		}
 		super.remove(company.getId());
 	}

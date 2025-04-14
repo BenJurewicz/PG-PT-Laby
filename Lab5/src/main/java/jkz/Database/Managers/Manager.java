@@ -5,6 +5,7 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import jakarta.persistence.Query;
 import jkz.Database.Misc.Persistable;
+import jkz.Database.SqlQuery;
 import jkz.Logging.Log;
 
 import java.util.List;
@@ -55,9 +56,15 @@ public class Manager<T extends Persistable> {
 	}
 
 	public List<?> sql(String sqlQuery) {
+		SqlQuery s = new SqlQuery(sqlQuery);
+		return sql(s).getResult();
+	}
+
+	public SqlQuery sql(SqlQuery sqlQuery) {
 		try (EntityManager em = emf.createEntityManager()) {
-			Query query = em.createNativeQuery(sqlQuery);
-			return query.getResultList();
+			Query query = em.createNativeQuery(sqlQuery.getQuery());
+			SqlQuery queryResult = new SqlQuery(sqlQuery.getQuery(), query.getResultList());
+			return queryResult;
 		}
 	}
 }

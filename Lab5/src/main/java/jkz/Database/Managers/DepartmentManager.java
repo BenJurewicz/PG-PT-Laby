@@ -12,8 +12,9 @@ public class DepartmentManager extends Manager<Department> {
 		EmployeeManager employeeManager = new EmployeeManager();
 		Department department = super.find(id);
 		for (Employee employee : department.getEmployees()) {
-			employee.setDepartment(null);
-			employeeManager.update(employee);
+//			employee.setDepartment(null);
+//			employeeManager.update(employee);
+			employeeManager.remove(employee.getId());
 		}
 		super.remove(id);
 	}
