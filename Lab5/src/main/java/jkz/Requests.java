@@ -49,13 +49,13 @@ public class Requests {
         return result;
     }
 
-    public static List<?>  avarageSalaryForIndustries(){
+    public static SqlQuery  avarageSalaryForIndustries(){
         Manager<Company> companyManager = new Manager<>(Company.class);
         String sqlQuery = "SELECT c.industry AS Industry, AVG(e.salary) AS AverageSalary FROM Company c JOIN Department d ON c.id = d.company_id JOIN Employee e ON d.id = e.department_id GROUP BY c.industry ORDER BY AverageSalary DESC;";
-        List<?> result = companyManager.sql(sqlQuery);
+        SqlQuery query = new SqlQuery(sqlQuery);
+        query = companyManager.sql(query);
         Log.debug("For every industry, calculate average salary");
-        SqlQuery query = new SqlQuery(sqlQuery, result);
         query.prettyPrint("Industry", "Average Salary");
-        return result;
+        return query;
     }
 }
