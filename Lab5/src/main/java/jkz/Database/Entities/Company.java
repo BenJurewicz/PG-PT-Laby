@@ -12,7 +12,7 @@ public class Company implements Persistable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	@OneToMany(mappedBy = "company")
+	@OneToMany(mappedBy = "company", cascade = CascadeType.REMOVE)
 	private List<Department> departments;
 
 	private String name;

@@ -19,7 +19,7 @@ public class Department implements Persistable {
 	@JoinColumn(name = "company_id")
 	private Company company;
 
-	@OneToMany(mappedBy = "department")
+	@OneToMany(mappedBy = "department", cascade = CascadeType.REMOVE)
 	private List<Employee> employees;
 
 	protected Department() {

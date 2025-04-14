@@ -52,7 +52,8 @@ public class SqlQuery {
 		for (Object row : result) {
 			if (row instanceof Object[]) {
 				Object[] columns = (Object[]) row;
-				for (int i = 0; i < columns.length; i++) {
+				int limit = Math.min(columns.length, colWidths.length);
+				for (int i = 0; i < limit; i++) {
 					colWidths[i] = Math.max(colWidths[i], columns[i].toString().length());
 				}
 			} else {
@@ -85,7 +86,8 @@ public class SqlQuery {
 	public static void printRows(List<?> result, int[] colWidths) {
 		for (Object row : result) {
 			if (row instanceof Object[] columns) {
-				for (int i = 0; i < columns.length; i++) {
+				int limit = Math.min(columns.length, colWidths.length); // Ensure no out-of-bounds access
+				for (int i = 0; i < limit; i++) {
 					Log.print(String.format("%-" + colWidths[i] + "s\t", columns[i]));
 				}
 				Log.println();
