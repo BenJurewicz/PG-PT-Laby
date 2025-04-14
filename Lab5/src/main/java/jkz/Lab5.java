@@ -24,6 +24,8 @@ public class Lab5 {
 		RequestNRecords.getRecords("Department",1 );
 		RequestNRecords.getRecords("Company",1 );
 
+
+
 	}
 
 	public static void silenceLogging() {
