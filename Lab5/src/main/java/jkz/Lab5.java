@@ -23,16 +23,13 @@ public class Lab5 {
 		companyManager.add(company);
 
 		Department department = new Department("Engineering", "London", company);
-		departmentManager.add(department)
-		;
+		departmentManager.add(department);
 		Employee employee = new Employee("John Doe", "123456789", 1000, new Date(), department);
 		employeeManager.add(employee);
-		department.setManager(employee);
-		departmentManager.update(department);
 
-//		employeeManager.remove(employee.getId());
-//		departmentManager.remove(department.getId());
-//		companyManager.remove(company.getId());
+		employeeManager.remove(employee.getId());
+		departmentManager.remove(department.getId());
+		companyManager.remove(company.getId());
 	}
 
 	public static void silenceLogging() {
@@ -40,6 +37,6 @@ public class Lab5 {
 		rootLogger.setLevel(Level.SEVERE);
 
 		Logger hibernateLogger = Logger.getLogger("org.hibernate");
-		hibernateLogger.setLevel(Level.SEVERE);
+		Logger.getLogger("org.hibernate").setLevel(Level.OFF);
 	}
 }

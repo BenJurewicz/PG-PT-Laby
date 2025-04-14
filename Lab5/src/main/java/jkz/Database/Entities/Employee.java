@@ -15,10 +15,6 @@ public class Employee implements Persistable {
 	@JoinColumn(name = "department_id")
 	Department department;
 
-	@OneToOne
-	@JoinColumn(name = "manager_id")
-	private Department manages;
-
 	private String name;
 	String pesel;
 	float salary;
@@ -68,5 +64,25 @@ public class Employee implements Persistable {
 				", employedFrom=" + employedFrom +
 				", department=" + department +
 				'}';
+	}
+
+	public void setEmployedFrom(Date employedFrom) {
+		this.employedFrom = employedFrom;
+	}
+
+	public void setSalary(float salary) {
+		this.salary = salary;
+	}
+
+	public void setPesel(String pesel) {
+		this.pesel = pesel;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setDepartment(Department department) {
+		this.department = department;
 	}
 }

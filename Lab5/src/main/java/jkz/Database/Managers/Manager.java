@@ -3,8 +3,11 @@ package jkz.Database.Managers;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
+import jakarta.persistence.Query;
 import jkz.Database.Misc.Persistable;
 import jkz.Logging.Log;
+
+import java.util.List;
 
 public class Manager<T extends Persistable> {
 	protected EntityManagerFactory emf;
@@ -24,12 +27,13 @@ public class Manager<T extends Persistable> {
 		Log.debug("Added entity to database: ", entity.toString());
 	}
 
-	public void find(Long id) {
+	public T find(Long id) {
 		EntityManager em = emf.createEntityManager();
 		em.getTransaction().begin();
 		T entity = em.find(entityClass, id);
 		em.getTransaction().commit();
 		em.close();
+		return entity;
 	}
 
 	public void update(T entity) {
@@ -49,5 +53,12 @@ public class Manager<T extends Persistable> {
 		em.getTransaction().commit();
 		em.close();
 		Log.debug("Removed entity from database: ", entity.toString());
+	}
+
+	public List<?> sql(String sqlQuery) {
+		try (EntityManager em = emf.createEntityManager()) {
+			Query query = em.createNativeQuery(sqlQuery);
+			return query.getResultList();
+		}
 	}
 }

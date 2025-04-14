@@ -3,6 +3,7 @@ package jkz.Database.Entities;
 import jakarta.persistence.*;
 import jkz.Database.Misc.Persistable;
 
+import java.util.Collections;
 import java.util.List;
 
 @Entity
@@ -21,18 +22,6 @@ public class Department implements Persistable {
 	@OneToMany(mappedBy = "department")
 	private List<Employee> employees;
 
-	public Employee getManager() {
-		return manager;
-	}
-
-	public void setManager(Employee manager) {
-		this.manager = manager;
-	}
-
-	@OneToOne
-	@JoinColumn(name = "manages_id")
-	private Employee manager;
-
 	protected Department() {
 	}
 
@@ -44,6 +33,10 @@ public class Department implements Persistable {
 
 	public Long getId() {
 		return id;
+	}
+
+	public List<Employee> getEmployees() {
+		return Collections.unmodifiableList(employees);
 	}
 
 	public String getName() {
@@ -65,5 +58,21 @@ public class Department implements Persistable {
 				", location='" + location + '\'' +
 				", company=" + company +
 				'}';
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public void setLocation(String location) {
+		this.location = location;
+	}
+
+	public void setCompany(Company company) {
+		this.company = company;
+	}
+
+	public void setEmployees(List<Employee> employees) {
+		this.employees = employees;
 	}
 }
