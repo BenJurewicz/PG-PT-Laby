@@ -76,55 +76,48 @@
 -- (19, 'Steve Rogers', 90000.00, '90123456789', '2021-01-01', 8, 18), -- Works in Legal
 -- (20, 'Tony Stark', 120000.00, '01234567890', '2022-02-02', 9, NULL); -- Manager of IT Support
 
--- select candidate for the new manager of the department
-SELECT 
-    e.name AS EmployeeName, 
-    d.name AS DepartmentName, 
-    e.employment_date
+-- select candidate for the raise of the department
+SELECT e.name AS EmployeeName,
+       d.name AS DepartmentName,
+       e.employment_date
 FROM Employee e
-JOIN Department d ON e.department_id = d.id
-WHERE e.employment_date = (
-    SELECT MIN(employment_date)
-    FROM Employee
-    WHERE department_id = e.department_id
-);
+         JOIN Department d ON e.department_id = d.id
+WHERE e.employment_date = (SELECT MIN(employment_date)
+                           FROM Employee
+                           WHERE department_id = e.department_id);
 
 -- for every company show in hom many locations it has departments
-SELECT 
-    c.name AS CompanyName, 
-    COUNT(DISTINCT d.location) AS NumberOfLocations
+SELECT c.name                     AS CompanyName,
+       COUNT(DISTINCT d.location) AS NumberOfLocations
 FROM Company c
-JOIN Department d ON c.id = d.company_id
+         JOIN Department d ON c.id = d.company_id
 GROUP BY c.name;
 
 -- for every company show the average salary of employees in the company
-SELECT 
-    c.name AS CompanyName, 
-    AVG(e.salary) AS AverageSalary
+SELECT c.name        AS CompanyName,
+       AVG(e.salary) AS AverageSalary
 FROM Company c
-JOIN Department d ON c.id = d.company_id
-JOIN Employee e ON d.id = e.department_id
+         JOIN Department d ON c.id = d.company_id
+         JOIN Employee e ON d.id = e.department_id
 GROUP BY c.name
 ORDER BY AverageSalary DESC;
 
 -- count how many employees and departments are in the company
-SELECT 
-    c.name AS CompanyName, 
-    COUNT(DISTINCT d.id) AS NumberOfDepartments, 
-    COUNT(e.id) AS NumberOfEmployees
+SELECT c.name               AS CompanyName,
+       COUNT(DISTINCT d.id) AS NumberOfDepartments,
+       COUNT(e.id)          AS NumberOfEmployees
 FROM Company c
-JOIN Department d ON c.id = d.company_id
-JOIN Employee e ON d.id = e.department_id
+         JOIN Department d ON c.id = d.company_id
+         JOIN Employee e ON d.id = e.department_id
 GROUP BY c.name
 ORDER BY NumberOfDepartments DESC, NumberOfEmployees DESC;
 
 -- show the average salary of employees in every industry
-SELECT 
-    c.industry AS Industry, 
-    AVG(e.salary) AS AverageSalary
+SELECT c.industry    AS Industry,
+       AVG(e.salary) AS AverageSalary
 FROM Company c
-JOIN Department d ON c.id = d.company_id
-JOIN Employee e ON d.id = e.department_id
+         JOIN Department d ON c.id = d.company_id
+         JOIN Employee e ON d.id = e.department_id
 GROUP BY c.industry
 ORDER BY AverageSalary DESC;
 
