@@ -4,8 +4,10 @@ import jkz.Database.Entities.Company;
 import jkz.Database.Entities.Department;
 import jkz.Database.Entities.Employee;
 import jkz.Database.Managers.Manager;
+import jkz.Logging.Log;
 
 import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
@@ -21,9 +23,11 @@ public class Lab5 {
 
 		Company company = new Company("Google", "Technology");
 		companyManager.add(company);
+		company = companyManager.find(1L);
 
 		Department department = new Department("Engineering", "London", company);
 		departmentManager.add(department);
+		department = departmentManager.find(1L);
 		Employee employee = new Employee("John Doe", "123456789", 1000, new Date(), department);
 		employeeManager.add(employee);
 

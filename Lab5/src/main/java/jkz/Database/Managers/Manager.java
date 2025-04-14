@@ -10,11 +10,10 @@ import jkz.Logging.Log;
 import java.util.List;
 
 public class Manager<T extends Persistable> {
-	protected EntityManagerFactory emf;
+	static protected EntityManagerFactory emf = Persistence.createEntityManagerFactory("PersistenceUnit");
 	protected Class<T> entityClass;
 
 	public Manager(Class<T> entityClass) {
-		this.emf = Persistence.createEntityManagerFactory("PersistenceUnit");
 		this.entityClass = entityClass;
 	}
 
