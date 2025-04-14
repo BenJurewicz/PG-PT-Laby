@@ -23,7 +23,7 @@ public class Requests {
         Manager<Company> companyManager = new Manager<>(Company.class);
         String sqlQuery = "SELECT c.name AS CompanyName, COUNT(DISTINCT d.location) AS NumberOfLocations FROM Company c JOIN Department d ON c.id = d.company_id GROUP BY c.name;";
         List<?> result = companyManager.sql(sqlQuery);
-        // Log.debug("For every company, in how many location it has departments: ", result.toString());
+        Log.debug("For every company, in how many location it has departments");
         prettyPrintQueryResult(result);
         return result;
     }
@@ -32,7 +32,7 @@ public class Requests {
         Manager<Company> companyManager = new Manager<>(Company.class);
         String sqlQuery = "SELECT c.name AS CompanyName, AVG(e.salary) AS AverageSalary FROM Company c JOIN Department d ON c.id = d.company_id JOIN Employee e ON d.id = e.department_id GROUP BY c.name ORDER BY AverageSalary DESC;";
         List<?> result = companyManager.sql(sqlQuery);
-        // Log.debug("For every company, calculate average salary: ", result.toString());
+        Log.debug("For every company, calculate average salary");
         prettyPrintQueryResult(result);
         return result;
     }
@@ -41,7 +41,7 @@ public class Requests {
         Manager<Company> companyManager = new Manager<>(Company.class);
         String sqlQuery = "SELECT c.name AS CompanyName, COUNT(DISTINCT d.id) AS NumberOfDepartments, COUNT(e.id) AS NumberOfEmployees FROM Company c JOIN Department d ON c.id = d.company_id JOIN Employee e ON d.id = e.department_id GROUP BY c.name ORDER BY NumberOfDepartments DESC, NumberOfEmployees DESC;";
         List<?> result = companyManager.sql(sqlQuery);
-        // Log.debug("For every company, count employees and departments: ", result.toString());
+        Log.debug("For every company, count employees and departments");
         prettyPrintQueryResult(result);
         return result;
     }
@@ -50,7 +50,7 @@ public class Requests {
         Manager<Company> companyManager = new Manager<>(Company.class);
         String sqlQuery = "SELECT c.industry AS Industry, AVG(e.salary) AS AverageSalary FROM Company c JOIN Department d ON c.id = d.company_id JOIN Employee e ON d.id = e.department_id GROUP BY c.industry ORDER BY AverageSalary DESC;";
         List<?> result = companyManager.sql(sqlQuery);
-        // Log.debug("For every industry, calculate average salary: ", result.toString());
+        Log.debug("For every industry, calculate average salary");
         prettyPrintQueryResult(result);
         return result;
     }
