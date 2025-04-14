@@ -27,9 +27,7 @@ public class Lab5 {
 		Employee employee = new Employee("John Doe", "123456789", 1000, new Date(), department);
 		employeeManager.add(employee);
 
-		employeeManager.remove(employee.getId());
-		departmentManager.remove(department.getId());
-		companyManager.remove(company.getId());
+		Requests.getCandidatesForRaise();
 	}
 
 	public static void silenceLogging() {
