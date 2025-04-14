@@ -4,12 +4,13 @@ import jkz.Database.Entities.Company;
 import jkz.Database.Entities.Department;
 import jkz.Database.Entities.Employee;
 import jkz.Database.Managers.Manager;
+import jkz.Database.SqlQuery;
 import jkz.Logging.Log;
 
 import java.util.List;
 
 public class RequestNRecords {
-    public static List<?>  getRecords(String className, int n){
+    public static void  getRecords(String className, int n){
         String lowerClassName = className.toLowerCase();
         if(n == 0){
             switch (lowerClassName) {
@@ -24,14 +25,13 @@ public class RequestNRecords {
                 case "employee" -> getNEmployees(n);
             }
         }
-        return List.of();
     }
     public static List<?>  getAllEmployees(){
         Manager<Employee> employeeManager = new Manager<>(Employee.class);
         String sqlQuery = "SELECT * FROM Employee;";
         List<?> result = employeeManager.sql(sqlQuery);
         Log.debug("Select all Employee records");
-        prettyPrintQueryResult(result);
+
         return result;
     }
     public static List<?>  getAllDepartments(){
@@ -39,7 +39,8 @@ public class RequestNRecords {
         String sqlQuery = "SELECT * FROM Department;";
         List<?> result = departmentManager.sql(sqlQuery);
         Log.debug("Select all Department records");
-        prettyPrintQueryResult(result);
+        SqlQuery query = new SqlQuery(sqlQuery, result);
+        query.prettyPrint("Department Name", "Location", "Company Name");
         return result;
     }
     public static List<?>  getAllCompanies(){
@@ -47,7 +48,8 @@ public class RequestNRecords {
         String sqlQuery = "SELECT * FROM Company;";
         List<?> result = companyManager.sql(sqlQuery);
         Log.debug("Select all Company records");
-        prettyPrintQueryResult(result);
+        SqlQuery query = new SqlQuery(sqlQuery, result);
+        query.prettyPrint("Company Name", "Industry");
         return result;
     }
     public static List<?>  getNEmployees(int n){
@@ -55,7 +57,8 @@ public class RequestNRecords {
         String sqlQuery = "SELECT * FROM Employee ORDER BY id LIMIT " + n + ";";
         List<?> result = employeeManager.sql(sqlQuery);
         Log.debug("Select " + n + " Employee records");
-        prettyPrintQueryResult(result);
+        SqlQuery query = new SqlQuery(sqlQuery, result);
+        query.prettyPrint("Employee Name", "Pesel", "Salary", "Employed From");
         return result;
     }
     public static List<?>  getNDepartments(int n){
@@ -63,7 +66,8 @@ public class RequestNRecords {
         String sqlQuery = "SELECT * FROM Department ORDER BY id LIMIT " + n + ";";
         List<?> result = departmentManager.sql(sqlQuery);
         Log.debug("Select " + n + " Department records");
-        prettyPrintQueryResult(result);
+        SqlQuery query = new SqlQuery(sqlQuery, result);
+        query.prettyPrint("Department Name", "Location", "Company Name");
         return result;
     }
     public static List<?>  getNCompanies(int n){
@@ -71,36 +75,8 @@ public class RequestNRecords {
         String sqlQuery = "SELECT * FROM Department ORDER BY id LIMIT " + n + ";";
         List<?> result = companyManager.sql(sqlQuery);
         Log.debug("Select " + n + " Company records");
-        prettyPrintQueryResult(result);
+        SqlQuery query = new SqlQuery(sqlQuery, result);
+        query.prettyPrint("Company Name", "Industry");
         return result;
-    }
-
-    public static void prettyPrintQueryResult(List<?> result) {
-        if (result == null || result.isEmpty()) {
-            Log.println("No results found.");
-            return;
-        }
-
-        Log.println("Query Results:");
-        Log.println("-----------------------------------");
-
-//        for (String columnName : colNames) {
-//            Log.print(columnName + "\t");
-//        }
-        Log.println();
-        Log.println("-----------------------------------");
-
-        for (Object row : result) {
-            if (row instanceof Object[]) {
-                Object[] columns = (Object[]) row;
-                for (Object column : columns) {
-                    Log.print(column + "\t");
-                }
-                Log.println();
-            } else {
-                Log.println(row.toString());
-            }
-        }
-        Log.println("-----------------------------------");
     }
 }
