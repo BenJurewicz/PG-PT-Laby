@@ -3,6 +3,7 @@ package jkz;
 import jkz.Database.Entities.Company;
 import jkz.Database.Entities.Employee;
 import jkz.Database.Managers.Manager;
+import jkz.Database.SqlQuery;
 import jkz.Logging.Log;
 
 import java.util.List;
