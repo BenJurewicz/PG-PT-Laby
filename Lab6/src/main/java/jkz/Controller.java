@@ -7,7 +7,15 @@ import java.util.Optional;
 
 public class Controller {
 	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-	private final Repository repository = new Repository();
+	private final Repository repository;
+
+	Controller() {
+		this.repository = new Repository();
+	}
+
+	Controller(Repository repository) {
+		this.repository = repository;
+	}
 
 	public String remove(Long id) {
 		try {
