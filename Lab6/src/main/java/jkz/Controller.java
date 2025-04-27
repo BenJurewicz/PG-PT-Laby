@@ -9,12 +9,10 @@ public class Controller {
 	private final Repository repository;
 	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
 
-	// default constructor used for integration tests
 	public Controller() {
 		this.repository = new Repository();
 	}
 
-	// constructor used for unit tests
 	public Controller(Repository repository) {
 		this.repository = repository;
 	}
