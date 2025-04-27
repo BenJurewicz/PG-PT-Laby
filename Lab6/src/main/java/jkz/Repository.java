@@ -9,16 +9,24 @@ import jkz.Employee;
 public class Repository {
 	private final Map<Long, Employee> employees = new HashMap<>();
 
-	public Long save(Employee employee) throws IllegalArgumentException {
-		// Returns added employee's id
-		throw new IllegalArgumentException("Not implemented yet");
+	public void save(Employee employee) throws IllegalArgumentException {
+		if (employees.containsKey(employee.getId())) {
+			throw new IllegalArgumentException("Employee with id " + employee.getId() + " already exists");
+		}
+		employees.put(employee.getId(), employee);
 	}
 
 	public Optional<Employee> find(Long id) {
-		return Optional.empty();
+		Employee employee = employees.get(id);
+		if (employee == null) {
+			return Optional.empty();
+		}
+		return Optional.of(employee);
 	}
 
 	public void remove(Long id) throws IllegalArgumentException {
-		throw new IllegalArgumentException("Not implemented yet");
+		if(employees.remove(id) == null) {
+			throw new IllegalArgumentException("Employee with id " + id + " does not exist");
+		}
 	}
 }
