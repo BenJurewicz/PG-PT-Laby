@@ -41,8 +41,8 @@ public class ControllerUnitTest {
 
 	@Test
 	public void successfulFind() {
-		Long existingId = 1L;
 		Employee employee = new Employee("John Doe", "12345678901", 5000.0f, new Date());
+		Long existingId = employee.getId();
 
 		when(repository.find(existingId)).thenReturn(Optional.of(employee));
 
@@ -62,7 +62,7 @@ public class ControllerUnitTest {
 	public void successfulSave() {
 		String employeeData = "John Doe, 12345678901, 5000.0, 2023-10-01";
 
-		when(repository.save(any(Employee.class))).thenReturn(123L);
+		doNothing().when(repository).save(any(Employee.class));
 
 		assertThat(controller.save(employeeData)).isEqualTo("done");
 	}
