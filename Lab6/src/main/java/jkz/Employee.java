@@ -3,13 +3,16 @@ package jkz;
 import java.util.Date;
 
 public class Employee {
-	private Long id;
+	private static long idCounter = 0;
+
+	private final Long id;
 	private String name;
 	String pesel;
 	float salary;
 	Date employedFrom;
 
 	public Employee(String name, String pesel, float salary, Date employedFrom) {
+		this.id = idCounter++;
 		this.name = name;
 		this.pesel = pesel;
 		this.salary = salary;
