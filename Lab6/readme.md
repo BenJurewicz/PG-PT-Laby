@@ -2,14 +2,14 @@
 
 ## Setup
 - [x] Dodać JUnit
-- [ ] Dodać AssertJ
-- [ ] Dodać Mockito
-- [ ] Napisać przykładowe użycie AssertJ
+- [x] Dodać AssertJ
+- [x] Dodać Mockito
+- [x] Napisać przykładowe użycie AssertJ
 
 ## Implementation
-- [ ] [Implement Entity Class](#dto-employee-from-lab5) \
+- [x] [Implement Entity Class](#dto-employee-from-lab5) \
     (`Employee` from `Lab5` without the `departament` field)
-- [ ] Mock implementation of `Repository` (using Mockito)
+- [x] Mock implementation of `Repository` (using Mockito)
 - [ ] [Implement `Repository`](#repository-details)
 - [ ] [Implement `Controller`](#controller-details) \
     (should work with actual `Repository` implementation and mock implementation)
