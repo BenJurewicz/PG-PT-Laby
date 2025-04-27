@@ -6,7 +6,11 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.Optional;
+import java.util.Date;
+
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -35,4 +39,38 @@ public class ControllerUnitTest {
 		assertThat(controller.remove(nonExistingId)).isEqualTo("not found");
 	}
 
+	@Test
+	public void successfulFind() {
+		Long existingId = 1L;
+		Employee employee = new Employee("John Doe", "12345678901", 5000.0f, new Date());
+
+		when(repository.find(existingId)).thenReturn(Optional.of(employee));
+
+		assertThat(controller.find(existingId)).isEqualTo(employee.toString());
+	}
+
+	@Test
+	public void unsuccessfulFind() {
+		Long nonExistingId = 2L;
+
+		when(repository.find(nonExistingId)).thenReturn(Optional.empty());
+
+		assertThat(controller.find(nonExistingId)).isEqualTo("not found");
+	}
+
+	@Test
+	public void successfulSave() {
+		String employeeData = "John Doe, 12345678901, 5000.0, 2023-10-01";
+
+		when(repository.save(any(Employee.class))).thenReturn(123L);
+
+		assertThat(controller.save(employeeData)).isEqualTo("done");
+	}
+
+	@Test
+	public void unsuccessfulSave() {
+		String invalidEmployeeData = "John Doe, 12345678901, invalid_salary, 2023-10-01";
+
+		assertThat(controller.save(invalidEmployeeData)).isEqualTo("bad request");
+	}
 }
