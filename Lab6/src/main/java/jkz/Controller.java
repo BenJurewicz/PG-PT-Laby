@@ -1,7 +1,7 @@
 package jkz;
 
 public class Controller {
-	Repository repository;
+	Repository repository = new Repository();
 
 	public String remove(Long id) {
 		try {
