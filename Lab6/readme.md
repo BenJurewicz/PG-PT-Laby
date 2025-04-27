@@ -30,11 +30,6 @@ Usunięcie i wyszukanie realizowane jest na podstawie przyjętego klucza główn
 powoduje `IllegalArgumentException`.
 
 ### Controller Details
-> Kontroler powinien korzystać z repozytorium dostarczonego przez wstrzykiwanie zależności.
-  
-In other words, controller should be able to switch between mock and actual
-implementation of `Repository`, by taking a reference to it in the constructor.
- 
 #### Methods:
 - `String remove(Long id)`
 - `String find(Long id)`
