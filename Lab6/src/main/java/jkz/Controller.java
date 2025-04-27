@@ -6,16 +6,8 @@ import java.util.Date;
 import java.util.Optional;
 
 public class Controller {
-	private final Repository repository;
 	private static final SimpleDateFormat DATE_FORMAT = new SimpleDateFormat("yyyy-MM-dd");
-
-	public Controller() {
-		this.repository = new Repository();
-	}
-
-	public Controller(Repository repository) {
-		this.repository = repository;
-	}
+	private final Repository repository = new Repository();
 
 	public String remove(Long id) {
 		try {
@@ -46,7 +38,7 @@ public class Controller {
 	}
 
 	private Employee parseEmployeeString(String employeeData)
-			throws ParseException, NumberFormatException, IllegalArgumentException {
+			throws ParseException, IllegalArgumentException {
 		String[] parts = employeeData.split(",");
 		if (parts.length != 4) {
 			throw new IllegalArgumentException("Invalid employee data format");
