@@ -41,8 +41,8 @@ public class ControllerUnitTest {
 
 	@Test
 	public void successfulFind() {
-		Long existingId = 1L;
 		Employee employee = new Employee("John Doe", "12345678901", 5000.0f, new Date());
+		Long existingId = employee.getId();
 
 		when(repository.find(existingId)).thenReturn(Optional.of(employee));
 
