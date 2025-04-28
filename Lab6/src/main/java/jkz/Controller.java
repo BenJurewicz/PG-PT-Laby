@@ -35,18 +35,17 @@ public class Controller {
 		}
 	}
 
-	public String save(String employeeData) {
+	public String save(Employee employee) {
 		try {
-			Employee employeeToSave = parseEmployeeString(employeeData);
-			repository.save(employeeToSave);
+			repository.save(employee);
 			return "done";
-		} catch (ParseException | IllegalArgumentException e) {
+		} catch (IllegalArgumentException e) {
 			return "bad request";
 		}
 	}
 
 	private Employee parseEmployeeString(String employeeData)
-			throws ParseException, IllegalArgumentException {
+			throws ParseException, NumberFormatException, IllegalArgumentException {
 		String[] parts = employeeData.split(",");
 		if (parts.length != 4) {
 			throw new IllegalArgumentException("Invalid employee data format");
