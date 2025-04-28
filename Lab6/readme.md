@@ -10,11 +10,11 @@
 - [x] [Implement Entity Class](#dto-employee-from-lab5) \
     (`Employee` from `Lab5` without the `departament` field)
 - [x] Mock implementation of `Repository` (using Mockito)
-- [ ] [Implement `Repository`](#repository-details)
-- [ ] [Implement `Controller`](#controller-details) \
+- [x] [Implement `Repository`](#repository-details)
+- [x] [Implement `Controller`](#controller-details) \
     (should work with actual `Repository` implementation and mock implementation)
-- [ ] [Write tests for `Repository`](#repository)
-- [ ] [Write tests for `Controller`](#controller)
+- [x] [Write tests for `Repository`](#repository)
+- [x] [Write tests for `Controller`](#controller)
 
 ### Repository Details
 Usunięcie i wyszukanie realizowane jest na podstawie przyjętego klucza głównego.
