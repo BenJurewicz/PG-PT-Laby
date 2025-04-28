@@ -71,8 +71,10 @@ public class ControllerUnitTest {
 	public void unsuccessfulSave() {
 		Employee employee = new Employee("John Doe", "12345678901", 5000.0f, new Date());
 
-        doThrow(new IllegalArgumentException()).when(repository).save(any(Employee.class));
+		doNothing().doThrow(new IllegalArgumentException())
+				.when(repository).save(employee);
 
+		controller.save(employee);
         assertThat(controller.save(employee)).isEqualTo("bad request");
 	}
 }
