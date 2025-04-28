@@ -69,8 +69,10 @@ public class ControllerUnitTest {
 
 	@Test
 	public void unsuccessfulSave() {
-		String invalidEmployeeData = "John Doe, 12345678901, invalid_salary, 2023-10-01";
+		String employeeData = "John Doe, 12345678901, 5000.0, 2023-10-01";
 
-		assertThat(controller.save(invalidEmployeeData)).isEqualTo("bad request");
+		when(repository.save(any(Employee.class))).thenThrow(new IllegalArgumentException());
+
+		assertThat(controller.save(employeeData)).isEqualTo("bad request");
 	}
 }
