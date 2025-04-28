@@ -60,19 +60,19 @@ public class ControllerUnitTest {
 
 	@Test
 	public void successfulSave() {
-		String employeeData = "John Doe, 12345678901, 5000.0, 2023-10-01";
+		Employee employee = new Employee("John Doe", "12345678901", 5000.0f, new Date());
 
 		doNothing().when(repository).save(any(Employee.class));
 
-		assertThat(controller.save(employeeData)).isEqualTo("done");
+		assertThat(controller.save(employee)).isEqualTo("done");
 	}
 
 	@Test
 	public void unsuccessfulSave() {
-		String employeeData = "John Doe, 12345678901, 5000.0, 2023-10-01";
+		Employee employee = new Employee("John Doe", "12345678901", 5000.0f, new Date());
 
-		when(repository.save(any(Employee.class))).thenThrow(new IllegalArgumentException());
+        doThrow(new IllegalArgumentException()).when(repository).save(any(Employee.class));
 
-		assertThat(controller.save(employeeData)).isEqualTo("bad request");
+        assertThat(controller.save(employee)).isEqualTo("bad request");
 	}
 }
