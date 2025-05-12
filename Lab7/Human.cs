@@ -37,8 +37,18 @@ namespace Lab1
 		}
 
 		public override string ToString() {
-			return $"Human: {Name}, {Gender}, {Age}";
+			return $"Name: {this.Name}\nAge: {this.Age}\nGender: {this.Gender}";
 		}
-	}
+		public string ChildrenToString()
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (var child in humans)
+            {
+                sb.Append(child.ToString());
+            }
+            return sb.ToString();
+        }
+
+    }
 
 }

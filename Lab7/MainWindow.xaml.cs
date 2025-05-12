@@ -55,5 +55,41 @@ namespace Lab1
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
+        // Event handler for the "Edit" menu item
+        private void EditMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Edit menu item clicked!");
+        }
+
+        // Event handler for the "Delete" menu item
+        private void DeleteMenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("Delete menu item clicked!");
+        }
+
+        private string _selectedHumanDetails;
+        public string SelectedHumanDetails
+        {
+            get => _selectedHumanDetails;
+            set
+            {
+                _selectedHumanDetails = value;
+                OnPropertyChanged(nameof(SelectedHumanDetails)); // Notify the UI about the property change, updates TextBlock
+            }
+        }
+
+        private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            // Get the selected item
+            var selectedItem = e.NewValue as Human;
+
+            if (selectedItem != null)
+            {
+                // Update the SelectedHumanDetails property with formatted details
+                // SelectedHumanDetails = $"Name: {selectedItem.Name}\nAge: {selectedItem.Age}\nGender: {selectedItem.Gender}";
+                SelectedHumanDetails = $"{selectedItem.ToString()}\n\nChildren:\n{selectedItem.ChildrenToString()}";
+            }
+        }
     }
 }
