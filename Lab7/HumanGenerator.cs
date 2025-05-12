@@ -12,7 +12,7 @@ namespace Lab1
 	{
 		static string[] names = { "John", "Jane", "Alice", "Bob", "Charlie", "Diana" };
 		static string[] surnames = { "Smith", "Johnson", "Williams", "Jones", "Brown", "Davis" };
-        static Random rand = new Random();
+        static Random random = new Random();
 
         public static HashSet<Human> Generate(uint depth)
 		{
@@ -34,15 +34,15 @@ namespace Lab1
 
 		public static Human generateRandomHuman(Human parent)
 		{
-            string randomName = names[rand.Next(0, names.Length-1)];
-			string randomSurname = surnames[rand.Next(0, surnames.Length - 1)];
+            string randomName = names[random.Next(0, names.Length-1)];
+			string randomSurname = surnames[random.Next(0, surnames.Length - 1)];
 			string fullName = randomName + " " + randomSurname;
 
-			int randomAge = parent.Age + rand.Next(20,30);
+			int randomAge = parent.Age + random.Next(20,30);
 
             Array values = Enum.GetValues(typeof(Gender));
 
-            int random_index = rand.Next(values.Length);
+            int random_index = random.Next(values.Length);
 
             Gender randomGender = (Gender)values.GetValue(random_index);
 
